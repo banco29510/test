@@ -31,7 +31,6 @@ def main ():
 
 
     dir = str(os.path.dirname(__file__)+"/score/")
-    #print(dir)
 
 
     if os.path.isdir(dir):
@@ -44,53 +43,32 @@ def main ():
     # liste des branches du dépot
     for ref in remote_refs:
         if ref.name == """origin/master""":
-            repo.git.checkout(ref.name)  # changer de branche sur main
+            repo.git.checkout(ref.name)  # changer de branche sur master
 
             print("liste des commits :")
-            fifty_first_commits = list(repo.iter_commits('main', max_count=50))
-            print(fifty_first_commits)
+            fifty_first_commits = list(repo.iter_commits(ref.name, max_count=10))
+            print(fifty_first_commits[0])
+            repo.commit(fifty_first_commits[0]) # choisit le dernier commit
 
+            # liste des fichiers dans le commit
+            for (_path, _stage), entry in repo.index.entries.items():
+                print(_path)
 
+                file_contents = repo.git.show('{}:{}'.format(fifty_first_commits[0],
+                                                             entry.path))  # recupere le contenu du fichier
 
+                if _path == "README.md":
+                    file = open("filename.md", "w+")
+                    file.write("---\r\n")
+                    file.write("title: \"My First Post\"\r\n")
+                    file.write("date: 2020-10-28T08:44:03+01:00\r\n")
+                    file.write("draft: true\r\n")
+                    file.write("---\r\n")
 
+                    file.write(file_contents + "\r\n") # ajoute le contenu dans le fichier
 
-    repo.commit('5888125c71572ca266cab9911ae042eedbaea142')
-    #print(repo.heads)
-    #print(repo.head.commit.tree)
-    ##print(list(repo.index.iter_blobs()))
+                    file.close()
 
-
-    print(list(repo.index.iter_blobs()))
-    print(list(repo.head.commit.tree.traverse()))
-    print(repo.index)
-    for (_path, _stage), entry in repo.index.entries.items():
-        print(_path)
-        print(_stage)
-        print(entry)
-        file_contents = repo.git.show('{}:{}'.format("5888125c71572ca266cab9911ae042eedbaea142", entry.path)) # recupere le contenu du fichier
-        #print(file_contents)
-
-    # repo.heads.master
-    #repo.commit('master')
-
-
-    #repo.git.checkout('main')
-    #a.git.checkout.master
-
-    file = open("filename.md", "w+")
-    file.write("---\r\n")
-    file.write("title: \"My First Post\"\r\n")
-    file.write("date: 2020-10-28T08:44:03+01:00\r\n")
-    file.write("draft: true\r\n")
-    file.write("---\r\n")
-
-    print(dir + "README.md")
-    if os.path.isfile(dir+"README.md"):
-        readme = open(dir+"README.md", "w+")
-        #print(readme.read())
-        file.write(readme.read()+"\r\n")
-
-    file.close()
 
     print("génération du site")
 
