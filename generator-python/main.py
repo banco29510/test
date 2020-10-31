@@ -31,7 +31,7 @@ def main ():
 
 
     dir = str(os.path.dirname(__file__)+"/score/")
-    print(dir)
+    #print(dir)
 
 
     if os.path.isdir(dir):
@@ -39,13 +39,42 @@ def main ():
 
     repo = git.Repo.clone_from("https://github.com/banco29510/score_test.git", dir)
 
-    for branch in repo.branches:
-        print("branch : "+str(branch))
-    repo.heads.master
+    remote_refs = repo.remote().refs
+
+    # liste des branches du dépot
+    for ref in remote_refs:
+        if ref.name == """origin/master""":
+            repo.git.checkout(ref.name)  # changer de branche sur main
+
+            print("liste des commits :")
+            fifty_first_commits = list(repo.iter_commits('main', max_count=50))
+            print(fifty_first_commits)
+
+
+
+
+
+    repo.commit('5888125c71572ca266cab9911ae042eedbaea142')
+    #print(repo.heads)
+    #print(repo.head.commit.tree)
+    ##print(list(repo.index.iter_blobs()))
+
+
+    print(list(repo.index.iter_blobs()))
+    print(list(repo.head.commit.tree.traverse()))
+    print(repo.index)
+    for (_path, _stage), entry in repo.index.entries.items():
+        print(_path)
+        print(_stage)
+        print(entry)
+        file_contents = repo.git.show('{}:{}'.format("5888125c71572ca266cab9911ae042eedbaea142", entry.path)) # recupere le contenu du fichier
+        #print(file_contents)
+
+    # repo.heads.master
     #repo.commit('master')
 
 
-    #repo.git.checkout('master')
+    #repo.git.checkout('main')
     #a.git.checkout.master
 
     file = open("filename.md", "w+")
@@ -58,7 +87,7 @@ def main ():
     print(dir + "README.md")
     if os.path.isfile(dir+"README.md"):
         readme = open(dir+"README.md", "w+")
-        print(readme.read())
+        #print(readme.read())
         file.write(readme.read()+"\r\n")
 
     file.close()
