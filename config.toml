@@ -1,4 +1,4 @@
 baseURL = "http://example.org/"
 languageCode = "fr-fr"
 title = "Site de partition"
-theme = "ananke"
+theme = "score"
