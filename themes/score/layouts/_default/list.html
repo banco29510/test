@@ -1,9 +1,18 @@
+{{ define "main" }}
+
 list.html
 
-<p>Liste des pages</p>
+
+<h1>{{ .Title }}</h1>
+{{ .Content }}
+
+<!--<p>Liste des pages</p>
 
 <ul>
             {{ range .Pages }}
                 <li><a href="{{ .Permalink }}">{{ .Title }}</a></li>
             {{ end }}
             </ul>
+-->
+
+{{ end }}

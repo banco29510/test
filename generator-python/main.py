@@ -50,23 +50,26 @@ def main ():
                 repo.commit(fifty_first_commits[0]) # choisit le dernier commit
 
                 # liste des fichiers dans le commit
+                files = []
                 for (_path, _stage), entry in repo.index.entries.items():
+                    files.append(_path)
                     print(_path)
+                print(files)
 
-                    file_contents = repo.git.show('{}:{}'.format(fifty_first_commits[0],
+                file_contents = repo.git.show('{}:{}'.format(fifty_first_commits[0],
                                                              entry.path))  # recupere le contenu du fichier
 
-                    if _path == "README.md":
-                        file = open(str(os.path.dirname(__file__)+"/../content/posts/"+str(depot[1])+".md"), "w+")
-                        file.write("---\r\n")
-                        file.write("title: \""+str(depot[1])+"\"\r\n")
-                        file.write("date: 2020-10-28T08:44:03+01:00\r\n")
-                        file.write("draft: true\r\n")
-                        file.write("---\r\n")
+                if _path == "README.md":
+                    file = open(str(os.path.dirname(__file__)+"/../content/posts/"+str(depot[1])+".md"), "w+")
+                    file.write("---\r\n")
+                    file.write("title: \""+str(depot[1])+"\"\r\n")
+                    file.write("date: 2020-10-28T08:44:03+01:00\r\n")
+                    file.write("draft: true\r\n")
+                    file.write("---\r\n")
 
-                        file.write(file_contents + "\r\n") # ajoute le contenu dans le fichier
+                    file.write(file_contents + "\r\n") # ajoute le contenu dans le fichier
 
-                        file.close()
+                    file.close()
 
         print("supp du dossier qui ne fonctionne pas: " + dir)
         shutil.rmtree(dir, ignore_errors=True)  # supprime le dossier

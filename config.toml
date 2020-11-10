@@ -2,3 +2,12 @@ baseURL = "http://example.org/"
 languageCode = "fr-fr"
 title = "Site de partition"
 theme = "score"
+
+[outputs]
+  home = ["HTML", "JSON", "RSS"]
+  page = ["HTML"]
+
+
+[params]
+  author = "banco"
+  description = "Essai site"
